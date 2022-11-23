@@ -88,31 +88,36 @@ def depthFirstSearch(problem: SearchProblem):
     """
     "*** YOUR CODE HERE ***"
 
-    pilha = util.Stack()
+    visited = []
+    path = util.Stack()
 
-    pilha.push(problem.getStartState())
-    path = []
-    goal = False
-    node = problem.getSuccessors(problem.getStartState())[0]
-    while(not goal):
-        if(problem.isGoalState(node[0])):
-            goal = True;
-        for child in problem.getSuccessors(problem.getStartState()):
-            if(problem.isGoalState(child[1])):
-                return pilha.join(',')
-            pilha.push(child)
-            for kid in problem.getSuccessors(child[0]):
-            
-            
+    try:
+        children = problem.getSuccessors(problem.getStartState())
+        for child in children:
+            dfsRecursive(problem, child, visited, path)
+    except:
+        util.raiseNotDefined()
+    
+    return path.list
 
-    print(pilha)
-    # return dfsIntern(problem, problem.getStartState(), pilha)
-        
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
 
-    util.raiseNotDefined()
+def dfsRecursive(problema: SearchProblem, no, visitados, caminho):
+    visitados.append(no)
+    caminho.push(no[1])
+
+    if(problema.isGoalState(no[0])):
+        return no
+    
+    for filho in problema.getSuccessors(no[0]):
+        if filho not in visitados:
+            temp = dfsRecursive(problema, filho, visitados, caminho);
+            if(temp):
+                return filho
+            else:
+                caminho.pop()
+
+    return
+          
 
 def breadthFirstSearch(problem: SearchProblem):
     """Search the shallowest nodes in the search tree first."""
