@@ -91,32 +91,32 @@ def depthFirstSearch(problem: SearchProblem):
     visited = []
     path = util.Stack()
 
+    root = [problem.getStartState(),'', 0]
     try:
-        children = problem.getSuccessors(problem.getStartState())
-        for child in children:
-            dfsRecursive(problem, child, visited, path)
+        dfsRecursive(problem, root, visited, path)
     except:
         util.raiseNotDefined()
-    
+
     return path.list
 
 
 def dfsRecursive(problema: SearchProblem, no, visitados, caminho):
-    visitados.append(no)
-    caminho.push(no[1])
 
     if(problema.isGoalState(no[0])):
-        return no
-    
+        return True
+
     for filho in problema.getSuccessors(no[0]):
-        if filho not in visitados:
+        if filho[0] not in visitados:
+            visitados.append(filho[0])
+            caminho.push(filho[1])
             temp = dfsRecursive(problema, filho, visitados, caminho);
-            if(temp):
-                return filho
+            if temp:
+                return temp
             else:
                 caminho.pop()
-
-    return
+    
+    return False
+     
           
 
 def breadthFirstSearch(problem: SearchProblem):
