@@ -101,17 +101,17 @@ def depthFirstSearch(problem: SearchProblem):
 
 
 def dfsRecursive(problema: SearchProblem, no, visitados, caminho):
+    visitados.append(no[0])
 
     if(problema.isGoalState(no[0])):
         return True
 
     for filho in problema.getSuccessors(no[0]):
         if filho[0] not in visitados:
-            visitados.append(filho[0])
             caminho.push(filho[1])
             temp = dfsRecursive(problema, filho, visitados, caminho);
             if temp:
-                return temp
+                return True
             else:
                 caminho.pop()
     
