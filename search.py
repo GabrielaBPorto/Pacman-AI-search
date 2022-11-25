@@ -122,7 +122,45 @@ def dfsRecursive(problema: SearchProblem, no, visitados, caminho):
 def breadthFirstSearch(problem: SearchProblem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    root = [problem.getStartState(),'', 0]
+
+    visited = []
+    paths = util.Queue()
+    paths.push(util.Queue())
+    toSee = util.Queue()
+    toSee.push(root)
+
+    
+    # try:
+    pathToGoal = bfsRecursive(problem, visited, toSee, paths)
+    # except:
+        # util.raiseNotDefined()
+
+    return pathToGoal.list
+
+
+def bfsRecursive(problema: SearchProblem, visitados, toSee, caminhos):
+    node = toSee.pop()
+    path = caminhos.pop()
+
+    if(node[0] in visitados):
+        return bfsRecursive(problema, visitados, toSee, caminhos)
+    
+
+    if problema.isGoalState(node[0]):
+        return path
+
+    visitados.append(node[0])
+    for filho in problema.getSuccessors(node[0]):
+        toSee.push(filho)
+        pathTemp = util.Stack()
+        pathTemp.list.extend(path.list)
+        pathTemp.push(filho[1])
+        caminhos.push(pathTemp)
+    
+    return bfsRecursive(problema, visitados, toSee, caminhos)
+     
+          
 
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
