@@ -40,6 +40,7 @@ from matplotlib.pyplot import hist
 from game import Directions
 from game import Agent
 from game import Actions
+from search import breadthFirstSearch
 import util
 import time
 import search
@@ -516,14 +517,10 @@ class ClosestDotSearchAgent(SearchAgent):
         Returns a path (a list of actions) to the closest dot, starting from
         gameState.
         """
-        # Here are some useful elements of the startState
-        startPosition = gameState.getPacmanPosition()
-        food = gameState.getFood()
-        walls = gameState.getWalls()
-        problem = AnyFoodSearchProblem(gameState)
 
-        from search import breadthFirstSearch
-        return breadthFirstSearch(problem)
+        problem = AnyFoodSearchProblem(gameState)
+       
+        return search.breadthFirstSearch(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
