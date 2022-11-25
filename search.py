@@ -209,44 +209,38 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
 
     root = [problem.getStartState(),'',0]
-    print('raiz', root)
     toSee = util.PriorityQueue()
     paths = util.PriorityQueue()
     visited = []
     goal = False
 
-    toSee.push(root[0], root[2])
+    toSee.push(root,0)
     paths.push([],0)
 
-    ## print(toSee.heap, goal)
     while not goal:
-        print('hi',toSee.heap,'size', len(toSee.heap))
         node = toSee.pop()
         path = paths.pop()
 
         if problem.isGoalState(node[0]):
             goal = True
-            print('GOOOOOOOOOOOOOOOOOOAL', path)
+            continue
+
+        if node[0] in visited:
             continue
 
         visited.append(node[0])
-        print(node)
-        children = problem.getSuccessors(node)
-        print('children', children)
+        children = problem.getSuccessors(node[0])
         for filho in children:
             if filho[0] not in visited:
                 pathTemp = []
                 pathTemp.extend(path)
                 pathTemp.append(filho[1])
-                print('filho',filho)
 
                 heuristicValue = heuristic(filho[0], problem)
                 value = problem.getCostOfActions(pathTemp)
 
-                toSee.push(filho[0],value+heuristicValue)
+                toSee.push(filho,value+heuristicValue)
                 paths.push(pathTemp,value+heuristicValue)
-
-                print('tosee', toSee.heap)
         
 
     return path
