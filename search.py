@@ -131,10 +131,10 @@ def breadthFirstSearch(problem: SearchProblem):
     toSee.push(root)
 
     
-    # try:
-    pathToGoal = bfsRecursive(problem, visited, toSee, paths)
-    # except:
-        # util.raiseNotDefined()
+    try:
+        pathToGoal = bfsRecursive(problem, visited, toSee, paths)
+    except:
+        util.raiseNotDefined()
 
     return pathToGoal.list
 
@@ -159,13 +159,44 @@ def bfsRecursive(problema: SearchProblem, visitados, toSee, caminhos):
         caminhos.push(pathTemp)
     
     return bfsRecursive(problema, visitados, toSee, caminhos)
-     
-          
 
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    
+    root = [problem.getStartState(),'', 0]
+
+    visited = []
+    paths = util.PriorityQueue()
+    toSee = util.PriorityQueue()
+
+    toSee.push(root,0)
+    paths.push([],0)
+    goal = False
+    
+    while not goal:
+        node = toSee.pop()
+        path = paths.pop()
+        if node[0] in visited:
+            continue
+        if problem.isGoalState(node[0]):
+            goal = True
+            continue
+        visited.append(node[0])
+        children = problem.getSuccessors(node[0])
+        for filho in children:
+            if(filho[0] not in visited):
+                pathTemp = []
+                pathTemp.extend(path)
+                pathTemp.append(filho[1])
+                value = problem.getCostOfActions(pathTemp)
+                toSee.push(filho, value)
+                paths.push(pathTemp, value)
+        
+    # except:
+        # util.raiseNotDefined()
+
+    return path
+    # return util.Queue().list
 
 def nullHeuristic(state, problem=None):
     """
